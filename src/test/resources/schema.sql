@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS ad
     brand           varchar(20)  not null,
     type            varchar(20)  not null,
     description     varchar(200) not null,
+    price           int          not null,
     PRIMARY KEY (id),
     FOREIGN KEY (user_account_id) REFERENCES user_account (id)
 )
