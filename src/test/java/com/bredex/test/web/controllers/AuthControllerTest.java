@@ -28,7 +28,7 @@ class AuthControllerTest {
 
         RegistrationDto body = RegistrationDto.builder()
                 .email("brandNewEmail")
-                .name("brandNewName")
+                .userName("brandNewName")
                 .password("brandNewEmail")
                 .build();
 
@@ -44,7 +44,7 @@ class AuthControllerTest {
         UserAccount savedUser = this.repository.findAll().get(userAccountCount);
 
         Assertions.assertEquals(body.getEmail(), savedUser.getEmail());
-        Assertions.assertEquals(body.getName(), savedUser.getUserName());
+        Assertions.assertEquals(body.getUserName(), savedUser.getUserName());
         Assertions.assertEquals(body.getPassword(), savedUser.getPassword());
         Assertions.assertNotNull(savedUser.getId());
     }
