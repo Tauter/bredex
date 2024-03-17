@@ -1,9 +1,11 @@
 package com.bredex.test.web.controllers;
 
+import com.bredex.test.domain.mappers.IUserAccountMapper;
 import com.bredex.test.domain.models.UserAccount;
 import com.bredex.test.services.IUserAccountService;
 import com.bredex.test.web.dtos.RegistrationDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,16 +20,18 @@ public class AuthController {
 
     private final IUserAccountService userAccountService;
 
+    private final IUserAccountMapper userAccountMapper;
+
     @PostMapping("/signup")
     public ResponseEntity<Void> SignUp(@Validated @RequestBody RegistrationDto registrationDto) {
 
         Optional<UserAccount> userByEmail = this.userAccountService.findByEmail(registrationDto.getEmail());
 
-        if (userByEmail.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (userByEmail.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        Optional<UserAccount> savedUser = this.userAccountService.save(userByEmail.get());
+        Optional<UserAccount> savedUser = this.userAccountService.save(this.userAccountMapper.mapTo(registrationDto));
 
         if (savedUser.isEmpty()) {
             return ResponseEntity.internalServerError().build();
