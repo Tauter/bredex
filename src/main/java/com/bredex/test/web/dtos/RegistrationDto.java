@@ -16,7 +16,7 @@ public class RegistrationDto {
 
     @Max(value = 50, message = "Name should not be greater than 50 character!")
     @NotEmpty
-    String name;
+    String userName;
 
     @Email(message = "Email should be in valid format!")
     String email;
