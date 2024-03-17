@@ -17,4 +17,12 @@ class IUserAccountMapperTest {
 
         Assertions.assertEquals(expected, this.mapper.mapTo(data));
     }
+    @Test
+    void mapToError() {
+        RegistrationDto data = RegistrationDto.builder().email("a").userName("b").password("c").build();
+
+        UserAccount expected = UserAccount.builder().email("testEmail").userName("testEmail").password("testPassword").build();
+
+        Assertions.assertNotEquals(expected, this.mapper.mapTo(data));
+    }
 }
