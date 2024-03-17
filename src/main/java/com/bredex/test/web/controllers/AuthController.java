@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class UserAccountController {
+public class AuthController {
 
     private final IUserAccountService userAccountService;
 
