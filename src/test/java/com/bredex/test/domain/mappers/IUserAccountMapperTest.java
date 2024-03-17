@@ -13,7 +13,7 @@ class IUserAccountMapperTest {
     void mapTo() {
         RegistrationDto data = RegistrationDto.builder().email("testEmail").userName("testEmail").password("testPassword").build();
 
-        UserAccount expected = UserAccount.builder().email("testEmail").userName("testEmail").password("testPassword").build();
+        UserAccount expected = UserAccount.builder().id(null).email("testEmail").userName("testEmail").password("testPassword").build();
 
         Assertions.assertEquals(expected, this.mapper.mapTo(data));
     }
