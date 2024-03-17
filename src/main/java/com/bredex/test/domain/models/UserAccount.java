@@ -1,14 +1,9 @@
 package com.bredex.test.domain.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 
 @Builder
@@ -16,6 +11,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@EqualsAndHashCode
 public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +22,8 @@ public class UserAccount {
     private String email;
 
     private String password;
+
+    @OneToMany
+    private Set<Ad> ads;
 
 }
