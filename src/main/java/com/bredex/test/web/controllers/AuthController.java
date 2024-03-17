@@ -39,4 +39,14 @@ public class AuthController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login() {
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        return ResponseEntity.ok().build();
+    }
 }
