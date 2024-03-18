@@ -11,7 +11,6 @@ import com.bredex.test.web.errors.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> SignUp(@Validated(RegistrationDto.class) @RequestBody RegistrationDto registrationDto) {
+    public ResponseEntity<Object> SignUp(@RequestBody RegistrationDto registrationDto) {
 
         List<CustomExceptionModel> validationErrors = registrationDtoValidator.validate(registrationDto);
 
