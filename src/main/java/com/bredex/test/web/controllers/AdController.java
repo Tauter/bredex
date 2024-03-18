@@ -7,6 +7,7 @@ import com.bredex.test.domain.models.UserAccount;
 import com.bredex.test.services.IAdService;
 import com.bredex.test.services.IUserAccountService;
 import com.bredex.test.web.dtos.AdCreationDto;
+import com.bredex.test.web.dtos.AdResponseDto;
 import com.bredex.test.web.dtos.SearchRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -74,10 +75,12 @@ public class AdController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ad> getById(@PathVariable Long id) {
+    public ResponseEntity<AdResponseDto> getById(@PathVariable Long id) {
         Optional<Ad> ad = this.adService.findById(id);
 
-        return ad.map(ResponseEntity::ok)
+        return ad
+                .map(this.adMapper::mapToResponse)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
