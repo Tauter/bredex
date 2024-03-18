@@ -11,14 +11,14 @@ import java.util.List;
 @Repository
 public interface IAdRepository extends JpaRepository<Ad, Long> {
 
-    @Query("SELECT a.* " +
+    @Query("SELECT DISTINCT a " +
             "FROM Ad a " +
             "WHERE " +
-            "a.brand like '%:#{#searchTerm.brand}%' " +
+            "a.brand like %:#{#searchDto.brand}%" +
             "OR " +
-            "a.type like '%:#{#searchTerm.type}%' " +
+            "a.type like %:#{#searchDto.type}% " +
             "OR " +
-            "a.price = :#{#searchTerm.price} "
+            "a.price = :#{#searchDto.price} "
     )
-    List<Ad> search(SearchRequestDto searchTerm);
+    List<Ad> search(SearchRequestDto searchDto);
 }
