@@ -97,7 +97,7 @@ class AuthControllerTest {
         ClassException jwt = Assertions.assertDoesNotThrow(() -> objectMapper.readValue(responseBytes, ClassException.class));
 
         Assertions.assertEquals("UserAccount", jwt.getClassName());
-        Assertions.assertEquals("User not found with this email: email@gmail.com", jwt.getMessage());
+        Assertions.assertEquals("User already exist with this email: email@gmail.com", jwt.getMessage());
 
     }
 

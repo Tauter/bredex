@@ -5,7 +5,7 @@ import com.bredex.test.domain.models.UserAccount;
 import com.bredex.test.services.IUserAccountService;
 import com.bredex.test.web.dtos.JwtResponseDto;
 import com.bredex.test.web.dtos.RegistrationDto;
-import com.bredex.test.web.errors.UserNotFoundException;
+import com.bredex.test.web.errors.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public class AuthController {
         if (userByEmail.isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body(new UserNotFoundException().of(registrationDto.getEmail()));
+                    .body(new UserAlreadyExistException().of(registrationDto.getEmail()));
         }
 
         this.userAccountService.save(this.userAccountMapper.mapTo(registrationDto));
