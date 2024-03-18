@@ -2,6 +2,7 @@ package com.bredex.test.services;
 
 import com.bredex.test.domain.models.Ad;
 import com.bredex.test.domain.repositories.IAdRepository;
+import com.bredex.test.web.dtos.SearchRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class AdService implements IAdService {
     }
 
     @Override
-    public List<Ad> search(String searchTerm) {
-        return List.of();
+    public List<Ad> search(SearchRequestDto searchTerm) {
+        return this.adRepository.search(searchTerm);
     }
 }
