@@ -35,7 +35,7 @@ public class AdController {
     private final Properties properties;
 
     @PostMapping
-    public ResponseEntity<Ad> createAd(@Validated @RequestBody AdCreationDto body, Principal principal) {
+    public ResponseEntity<Long> createAd(@Validated @RequestBody AdCreationDto body, Principal principal) {
         Optional<UserAccount> user = this.userService.findByEmail(principal.getName());
 
         if (user.isEmpty()) {
@@ -46,7 +46,7 @@ public class AdController {
 
         Optional<Ad> save = this.adService.save(ad);
 
-        return save.map(ResponseEntity::ok)
+        return save.map(Ad::getId).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
 
     }
