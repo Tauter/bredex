@@ -1,11 +1,13 @@
 package com.bredex.test.web.controllers;
 
+import com.bredex.test.config.Properties;
 import com.bredex.test.domain.mappers.IAdMapper;
 import com.bredex.test.domain.models.Ad;
 import com.bredex.test.domain.models.UserAccount;
 import com.bredex.test.services.IAdService;
 import com.bredex.test.services.IUserAccountService;
 import com.bredex.test.web.dtos.AdCreationDto;
+import com.bredex.test.web.dtos.SearchRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/ad")
@@ -27,6 +30,8 @@ public class AdController {
     private final IUserAccountService userService;
 
     private final IAdMapper adMapper;
+
+    private final Properties properties;
 
     @PostMapping
     public ResponseEntity<Ad> createAd(@Validated @RequestBody AdCreationDto body, Principal principal) {
@@ -77,11 +82,17 @@ public class AdController {
 
     }
 
-
-    //todo yes
     @GetMapping("/search")
-    public ResponseEntity<List<String>> search() {
-        return ResponseEntity.ok(List.of());
+    public ResponseEntity<List<String>> search(
+            @RequestParam @Validated SearchRequestDto searchRequest) {
+
+        List<String> search = this.adService.search(searchRequest)
+                .stream()
+                .map(Ad::getId)
+                .map(adId -> properties.getDefaultUrl() + "/ad/" + adId.toString())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(search);
     }
 
 
