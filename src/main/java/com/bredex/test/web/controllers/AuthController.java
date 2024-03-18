@@ -3,46 +3,48 @@ package com.bredex.test.web.controllers;
 import com.bredex.test.domain.mappers.IUserAccountMapper;
 import com.bredex.test.domain.models.UserAccount;
 import com.bredex.test.services.IUserAccountService;
+import com.bredex.test.web.dtos.JwtResponseDto;
 import com.bredex.test.web.dtos.RegistrationDto;
+import com.bredex.test.web.errors.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@RestController
 public class AuthController {
 
     private final IUserAccountService userAccountService;
 
     private final IUserAccountMapper userAccountMapper;
 
+
     @PostMapping("/signup")
-    public ResponseEntity<Void> SignUp(@Validated @RequestBody RegistrationDto registrationDto) {
+    public ResponseEntity<Object> SignUp(@Validated @RequestBody RegistrationDto registrationDto) {
 
         Optional<UserAccount> userByEmail = this.userAccountService.findByEmail(registrationDto.getEmail());
 
         if (userByEmail.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(new UserNotFoundException().of(registrationDto.getEmail()));
         }
 
-        Optional<UserAccount> savedUser = this.userAccountService.save(this.userAccountMapper.mapTo(registrationDto));
+        this.userAccountService.save(this.userAccountMapper.mapTo(registrationDto));
 
-        if (savedUser.isEmpty()) {
-            return ResponseEntity.internalServerError().build();
-        }
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login() {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<JwtResponseDto> login(@RequestParam String email, @RequestParam String password) {
+
+        return ResponseEntity.ok(JwtResponseDto.builder().build());
+
     }
 
     @PostMapping("/logout")
