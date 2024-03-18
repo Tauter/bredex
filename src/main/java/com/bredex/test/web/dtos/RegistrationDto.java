@@ -4,10 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.With;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 
 @Builder
 @Getter
@@ -22,7 +19,7 @@ public class RegistrationDto {
     String email;
 
     @Min(value = 8, message = "Password length should be minimum 8 character")
-    //todo regex // jelszó (min 8 karakter, kisbetű, nagybetű, szám)).
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)")
     String password;
 
 }
