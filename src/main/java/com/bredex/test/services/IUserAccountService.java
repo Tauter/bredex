@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface IUserAccountService {
     Optional<UserAccount> findByEmail(String email);
 
-    Optional<UserAccount> save(UserAccount userAccount);
+    UserAccount save(UserAccount userAccount);
 }

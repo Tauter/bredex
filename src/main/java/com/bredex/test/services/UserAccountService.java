@@ -20,7 +20,7 @@ public class UserAccountService implements IUserAccountService {
     }
 
     @Override
-    public Optional<UserAccount> save(UserAccount userAccount) {
-        return Optional.of(this.userRepository.save(userAccount));
+    public UserAccount save(UserAccount userAccount) {
+        return this.userRepository.save(userAccount);
     }
 }
