@@ -33,34 +33,6 @@ class AuthControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    //
-//    @Test
-//    void signUp() {
-//
-//        int userAccountCount = this.repository.findAll().size();
-//
-//        RegistrationDto body = RegistrationDto.builder()
-//                .email("brandNewEmail")
-//                .userName("brandNewName")
-//                .password("brandNewEmail")
-//                .build();
-//
-//        this.webTestClient.post()
-//                .uri("/auth/signup")
-//                .bodyValue(body)
-//                .exchange()
-//                .expectStatus().isEqualTo(HttpStatus.CREATED)
-//                .expectBody().isEmpty();
-//
-//        Assertions.assertEquals(userAccountCount + 1, this.repository.findAll().size());
-//
-//        UserAccount savedUser = this.repository.findAll().get(userAccountCount);
-//
-//        Assertions.assertEquals(body.getEmail(), savedUser.getEmail());
-//        Assertions.assertEquals(body.getUserName(), savedUser.getUserName());
-//        Assertions.assertEquals(body.getPassword(), savedUser.getPassword());
-//        Assertions.assertNotNull(savedUser.getId());
-//    }
     @Test
     void signup() {
 
