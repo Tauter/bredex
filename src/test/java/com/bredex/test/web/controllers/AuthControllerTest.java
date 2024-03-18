@@ -3,7 +3,7 @@ package com.bredex.test.web.controllers;
 import com.bredex.test.domain.repositories.IUserAccountRepository;
 import com.bredex.test.web.dtos.JwtResponseDto;
 import com.bredex.test.web.dtos.RegistrationDto;
-import com.bredex.test.web.errors.ClassException;
+import com.bredex.test.web.errors.CustomExceptionModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,11 +68,32 @@ class AuthControllerTest {
 
         byte[] responseBytes = mvcResult.getResponse().getContentAsByteArray();
 
-        ClassException jwt = Assertions.assertDoesNotThrow(() -> objectMapper.readValue(responseBytes, ClassException.class));
+        CustomExceptionModel jwt = Assertions.assertDoesNotThrow(() -> objectMapper.readValue(responseBytes, CustomExceptionModel.class));
 
         Assertions.assertEquals("UserAccount", jwt.getClassName());
         Assertions.assertEquals("User already exist with this email: email@gmail.com", jwt.getMessage());
 
+    }
+
+    @Test
+    void signupBadRequest() {
+
+        RegistrationDto body = RegistrationDto.builder().email("email@gmail.com").userName("yes").password("a").build();
+
+        MvcResult mvcResult = Assertions.assertDoesNotThrow(() ->
+                mockMvc.perform(post("/auth/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(body))
+                        )
+                        .andExpect(status().isBadRequest())
+                        .andReturn());
+
+        byte[] responseBytes = mvcResult.getResponse().getContentAsByteArray();
+
+
+        List errors = Assertions.assertDoesNotThrow(() -> objectMapper.readValue(responseBytes, List.class));
+
+        Assertions.assertEquals(3, errors.size());
     }
 
     @Test
