@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -39,13 +40,14 @@ class UserAccountRepositoryTest {
     }
 
     @Test
+    @DirtiesContext
     void save() {
         UserAccount toBeSaved = UserAccount.builder().userName("newTestUser").email("newTestEmail").password("newPassword").build();
 
         UserAccount savedUser = this.repository.save(toBeSaved);
 
         Assertions.assertAll(
-                () -> Assertions.assertEquals(2, savedUser.getId()),
+                () -> Assertions.assertEquals(3, savedUser.getId()),
                 () -> Assertions.assertEquals(savedUser.getUserName(), "newTestUser"),
                 () -> Assertions.assertEquals(savedUser.getEmail(), "newTestEmail"),
                 () -> Assertions.assertEquals(savedUser.getPassword(), "newPassword")

@@ -117,10 +117,12 @@ class AdRepositoryTest {
         SearchRequestDto searchRequestDto = SearchRequestDto.builder().type("Corsa").brand("Op").price(0L).build();
         List<Ad> result = this.repository.search(searchRequestDto);
 
-        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(2, result.size());
         Assertions.assertEquals(5L, result.get(0).getPrice());
         Assertions.assertEquals("Opel", result.get(0).getBrand());
         Assertions.assertEquals("Corsa", result.get(0).getType());
+        Assertions.assertEquals(1L, result.get(0).getUserAccount().getId());
+        Assertions.assertEquals(2L, result.get(1).getUserAccount().getId());
     }
 
 
