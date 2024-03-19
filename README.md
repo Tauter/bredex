@@ -21,5 +21,10 @@
     </li>
 </ul>
 
-<h2>Leírás</h2>
-
+<h2>Elindítás</h2>
+<h3>Szükséges eszközök</h3>
+    Java 11, Maven
+<h2>Indítás</h2>
+<p>Amennyiben minden szükséges elem feltelepült, navigáljunk el az alkalmazás főmappájába.
+<br>Aztán ezen parancssorral elindíthatjuk a programot:</p>
+<p>mvn spring-boot:run</p>
