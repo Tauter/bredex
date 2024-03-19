@@ -9,4 +9,7 @@ import org.springframework.stereotype.Component;
 public class Properties {
     @Value("${url}")
     private String defaultUrl;
+
+    @Value("${secretKey}")
+    private String secretKey;
 }
