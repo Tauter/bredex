@@ -17,4 +17,23 @@ CREATE TABLE IF NOT EXISTS ad
     price           int          not null,
     PRIMARY KEY (id),
     FOREIGN KEY (user_account_id) REFERENCES user_account (id)
+);
+
+CREATE TABLE IF NOT EXISTS refresh_token
+(
+    id              int auto_increment,
+    user_account_id int          not null,
+    token           varchar(36)  not null,
+    expiry_date     datetime not null,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_account_id) REFERENCES user_account (id)
+);
+
+CREATE TABLE IF NOT EXISTS logout
+(
+    id              int auto_increment,
+    user_account_id int          not null,
+    logged_out     datetime not null,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_account_id) REFERENCES user_account (id)
 )
