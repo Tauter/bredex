@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -59,7 +58,7 @@ public class AdController {
         Optional<Ad> save = this.adService.save(ad);
 
         return save.map(Ad::getId)
-                .map(body1 -> ResponseEntity.ok((Object) body1))
+                .map(body1 -> ResponseEntity.status(HttpStatus.CREATED).body((Object) body1))
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
 
     }
@@ -99,8 +98,7 @@ public class AdController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<String>> search(
-            @RequestParam @Validated SearchRequestDto searchRequest) {
+    public ResponseEntity<List<String>> search(SearchRequestDto searchRequest) {
 
         List<String> search = this.adService.search(searchRequest)
                 .stream()
