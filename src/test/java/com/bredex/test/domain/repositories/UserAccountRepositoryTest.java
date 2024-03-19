@@ -19,15 +19,15 @@ class UserAccountRepositoryTest {
 
     @Test
     void findUserAccountByEmail() {
-        Optional<UserAccount> userAccountByEmail = this.repository.findUserAccountByEmail("test@email.com");
+        Optional<UserAccount> userAccountByEmail = this.repository.findUserAccountByEmail("email@gmail.com");
 
         UserAccount userAccount = Assertions.assertDoesNotThrow(userAccountByEmail::get);
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(1, userAccount.getId()),
-                () -> Assertions.assertEquals("test@email.com", userAccount.getEmail()),
-                () -> Assertions.assertEquals("testName", userAccount.getUserName()),
-                () -> Assertions.assertEquals("testPassword", userAccount.getPassword())
+                () -> Assertions.assertEquals("email@gmail.com", userAccount.getEmail()),
+                () -> Assertions.assertEquals("user", userAccount.getUserName()),
+                () -> Assertions.assertEquals("password", userAccount.getPassword())
         );
     }
 
