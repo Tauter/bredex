@@ -6,9 +6,11 @@ import com.bredex.test.domain.models.Ad;
 import com.bredex.test.domain.models.UserAccount;
 import com.bredex.test.services.IAdService;
 import com.bredex.test.services.IUserAccountService;
+import com.bredex.test.services.validators.AdCreationDtoValidator;
 import com.bredex.test.web.dtos.AdCreationDto;
 import com.bredex.test.web.dtos.AdResponseDto;
 import com.bredex.test.web.dtos.SearchRequestDto;
+import com.bredex.test.web.errors.CustomExceptionModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +36,18 @@ public class AdController {
 
     private final Properties properties;
 
+    private final AdCreationDtoValidator adCreationDtoValidator;
+
     @PostMapping
-    public ResponseEntity<Long> createAd(@Validated @RequestBody AdCreationDto body, Principal principal) {
+    public ResponseEntity<Object> createAd(@RequestBody AdCreationDto body, Principal principal) {
+
+        List<CustomExceptionModel> validationErrors = adCreationDtoValidator.validate(body);
+
+        if (!validationErrors.isEmpty()) {
+            return ResponseEntity.badRequest().body(validationErrors);
+        }
+
+
         Optional<UserAccount> user = this.userService.findByEmail(principal.getName());
 
         if (user.isEmpty()) {
@@ -46,7 +58,8 @@ public class AdController {
 
         Optional<Ad> save = this.adService.save(ad);
 
-        return save.map(Ad::getId).map(ResponseEntity::ok)
+        return save.map(Ad::getId)
+                .map(body1 -> ResponseEntity.ok((Object) body1))
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
 
     }
